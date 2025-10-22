@@ -6,7 +6,7 @@
 /*   By: mmubina <mmubina@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/22 10:54:00 by mmubina           #+#    #+#             */
-/*   Updated: 2025/10/22 10:54:54 by mmubina          ###   ########.fr       */
+/*   Updated: 2025/10/22 12:45:05 by mmubina          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 
 char	*_set_line(char *line_buffer)
 {
-	int		i;
-	char	*remainder;
+	int			i;
+	static char	*remainder;
 
 	i = 0;
 	while (line_buffer[i] != '\0' && line_buffer[i] != '\n')
