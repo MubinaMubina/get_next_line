@@ -6,7 +6,7 @@
 /*   By: mmubina <mmubina@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/22 10:47:31 by mmubina           #+#    #+#             */
-/*   Updated: 2025/10/22 15:47:23 by mmubina          ###   ########.fr       */
+/*   Updated: 2025/10/23 20:11:02 by mmubina          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,22 +14,22 @@
 
 static char	*_fill_line_buffer(int fd, char *remainder, char *buffer)
 {
-	char		*line_buffer;
-	int			i;
-	static char	*remainder;
-	ssize_t		bytes_read;
+	ssize_t	bytes_read;
+	char	*newline_found;
 
-	i = 0;
-	bytes_read = read(fd, buffer, strlen(buffer));
-	while (bytes_read > 0)
+	newline_found = NULL;
+	bytes_read = read(fd, buffer, BUFFER_SIZE);
+	while (!newline_found && bytes_read > 0)
 	{
-		if (remainder[i] == NULL)
-			ft_strdup(remainder);
+		buffer[bytes_read] = '\0';
+		if (remainder == NULL)
+			remainder = ft_strdup(buffer);
 		else
 			remainder = ft_strjoin(remainder, buffer);
-		if (buffer[i] == '\n')
+		newline_found = ft_strchr(remainder, '\n');
+		if (newline_found)
 			break ;
-		i++;
+		bytes_read = read(fd, buffer, BUFFER_SIZE);
 	}
 	return (remainder);
 }
