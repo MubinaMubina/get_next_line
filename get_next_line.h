@@ -6,14 +6,16 @@
 /*   By: mmubina <mmubina@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/23 17:46:41 by mmubina           #+#    #+#             */
-/*   Updated: 2025/10/23 20:06:17 by mmubina          ###   ########.fr       */
+/*   Updated: 2025/10/24 16:58:33 by mmubina          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef GET_NEXT_LINE_H
 # define GET_NEXT_LINE_H
 
-# define BUFFER_SIZE 42
+# ifndef BUFFER_SIZE
+#  define BUFFER_SIZE 1
+# endif
 
 # include <limits.h>
 # include <stdio.h>
@@ -28,12 +30,9 @@ typedef struct s_list
 }					t_list;
 
 char				*ft_substr(char const *s, unsigned int start, size_t len);
-char				*ft_strchr(const char *s, int c);
-int					ft_strlen(const char *s);
+ssize_t				ft_strlen(const char *s);
 char				*ft_strjoin(char *s1, char const *s2);
 char				*ft_strdup(const char *src);
 char				*get_next_line(int fd);
-char				*_fill_line_buffer(int fd, char *left_c, char *buffer);
-char				*_set_line(char *line_buffer);
 
 #endif

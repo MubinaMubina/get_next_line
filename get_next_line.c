@@ -6,11 +6,15 @@
 /*   By: mmubina <mmubina@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/23 20:07:45 by mmubina           #+#    #+#             */
-/*   Updated: 2025/10/24 16:05:55 by mmubina          ###   ########.fr       */
+/*   Updated: 2025/10/24 16:58:36 by mmubina          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
+
+static char	*_fill_line_buffer(int fd, char *left_c, char *buffer);
+static char	*_set_line(char *line);
+char		*ft_strchr(char *s, int c);
 
 char	*get_next_line(int fd)
 {
@@ -20,19 +24,21 @@ char	*get_next_line(int fd)
 
 	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (NULL);
-	if (read(fd, 0, 0) < 0)
-		return (NULL);
 	buffer = malloc(BUFFER_SIZE + 1);
 	if (!buffer)
 		return (NULL);
 	remainder = _fill_line_buffer(fd, remainder, buffer);
+	free(buffer);
 	if (!remainder)
+		return (NULL);
+	line = ft_strdup(remainder);
+	if (!line)
 	{
 		free(remainder);
+		remainder = NULL;
 		return (NULL);
 	}
-	line = _set_line(remainder);
-	free(buffer);
+	remainder = _set_line(remainder);
 	return (line);
 }
 
@@ -58,7 +64,7 @@ static char	*_fill_line_buffer(int fd, char *remainder, char *buffer)
 	return (remainder);
 }
 
-char	*_set_line(char *line_buffer)
+static char	*_set_line(char *line_buffer)
 {
 	int		i;
 	char	*remainder;
@@ -68,9 +74,12 @@ char	*_set_line(char *line_buffer)
 		i++;
 	if (line_buffer[i] == '\n')
 	{
-		remainder = ft_substr(line_buffer, (i + 1), ft_strlen(line_buffer + i
+		remainder = ft_substr(line_buffer, i + 1, ft_strlen(line_buffer) - (i
 					+ 1));
 		line_buffer[i + 1] = '\0';
+		free(line_buffer);
+		return (remainder);
 	}
-	return (remainder);
+	free(line_buffer);
+	return (NULL);
 }

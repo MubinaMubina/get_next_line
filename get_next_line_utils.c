@@ -6,7 +6,7 @@
 /*   By: mmubina <mmubina@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/23 17:58:48 by mmubina           #+#    #+#             */
-/*   Updated: 2025/10/23 20:07:00 by mmubina          ###   ########.fr       */
+/*   Updated: 2025/10/24 16:58:30 by mmubina          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ char	*ft_strdup(const char *src)
 	return (str);
 }
 
-int	ft_strlen(const char *s)
+ssize_t	ft_strlen(const char *s)
 {
 	int	i;
 
