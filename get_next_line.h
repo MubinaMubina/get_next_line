@@ -6,7 +6,7 @@
 /*   By: mmubina <mmubina@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/23 17:46:41 by mmubina           #+#    #+#             */
-/*   Updated: 2025/10/24 16:58:33 by mmubina          ###   ########.fr       */
+/*   Updated: 2025/10/27 18:17:37 by mmubina          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,10 @@
 # define GET_NEXT_LINE_H
 
 # ifndef BUFFER_SIZE
-#  define BUFFER_SIZE 1
+#  define BUFFER_SIZE 42
 # endif
 
+# include <fcntl.h>
 # include <limits.h>
 # include <stdio.h>
 # include <stdlib.h>

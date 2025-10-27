@@ -6,7 +6,7 @@
 /*   By: mmubina <mmubina@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/23 17:58:48 by mmubina           #+#    #+#             */
-/*   Updated: 2025/10/24 16:58:30 by mmubina          ###   ########.fr       */
+/*   Updated: 2025/10/24 19:41:48 by mmubina          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,8 @@ char	*ft_strchr(const char *s, int c)
 {
 	char	target;
 
+	if (!s)
+		return (NULL);
 	target = (char)c;
 	while (*s)
 	{
@@ -50,6 +52,8 @@ ssize_t	ft_strlen(const char *s)
 {
 	int	i;
 
+	if (!s)
+		return (0);
 	i = 0;
 	while (s[i])
 	{
@@ -88,21 +92,24 @@ char	*ft_strjoin(char *s1, char const *s2)
 	int		i;
 	int		j;
 
-	i = 0;
-	j = 0;
-	if (!s1 && !s2)
-		return (NULL);
+	if (!s2)
+		return (s1);
 	if (!s1)
+	{
 		s1 = ft_strdup("");
+		if (!s1)
+			return (NULL);
+	}
 	str = malloc((ft_strlen(s1) + ft_strlen(s2) + 1) * sizeof(char));
 	if (!str)
-		return (NULL);
+		return (free(s1), NULL);
+	i = 0;
+	j = 0;
 	while (s1[i])
 		str[j++] = s1[i++];
 	i = 0;
 	while (s2[i])
 		str[j++] = s2[i++];
 	str[j] = '\0';
-	free(s1);
-	return (str);
+	return (free(s1), str);
 }
