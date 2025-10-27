@@ -6,15 +6,14 @@
 /*   By: mmubina <mmubina@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/23 20:07:45 by mmubina           #+#    #+#             */
-/*   Updated: 2025/10/27 19:20:02 by mmubina          ###   ########.fr       */
+/*   Updated: 2025/10/27 20:51:11 by mmubina          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-static char	*_fill_line_buffer(int fd, char *left_c, char *buffer);
-static char	*_set_line(char *line);
-char		*ft_strchr(char *s, int c);
+static char	*_fill_line_buffer(int fd, char *remainder, char *buffer);
+static char	*_set_line(char *line_buffer);
 static char	*extract_line(char *remainder);
 
 char	*get_next_line(int fd)
@@ -43,28 +42,28 @@ char	*get_next_line(int fd)
 	return (line);
 }
 
-static char	*_fill_line_buffer(int fd, char *remainder, char *buffer)
+static char	*_fill_line_buffer(int fd, char *rem, char *buf)
 {
 	ssize_t	bytes_read;
-	char	*newline_found;
 
-	newline_found = ft_strchr(remainder, '\n');
-	bytes_read = read(fd, buffer, BUFFER_SIZE);
-	while (!newline_found && bytes_read > 0)
+	if (rem && ft_strchr(rem, '\n'))
+		return (rem);
+	bytes_read = read(fd, buf, BUFFER_SIZE);
+	while (bytes_read > 0)
 	{
-		buffer[bytes_read] = '\0';
-		if (remainder == NULL)
-			remainder = ft_strdup(buffer);
-		else
-			remainder = ft_strjoin(remainder, buffer);
-		if (!remainder)
-			return (NULL);
-		newline_found = ft_strchr(remainder, '\n');
-		if (newline_found)
+		buf[bytes_read] = '\0';
+		rem = ft_strjoin(rem, buf);
+		if (!rem || ft_strchr(rem, '\n'))
 			break ;
-		bytes_read = read(fd, buffer, BUFFER_SIZE);
+		bytes_read = read(fd, buf, BUFFER_SIZE);
 	}
-	return (remainder);
+	if (bytes_read < 0)
+	{
+		free(rem);
+		rem = NULL;
+		return (NULL);
+	}
+	return (rem);
 }
 
 static char	*_set_line(char *line_buffer)
@@ -72,12 +71,14 @@ static char	*_set_line(char *line_buffer)
 	int		i;
 	char	*new_remainder;
 
+	if (!line_buffer)
+		return (NULL);
 	i = 0;
-	while (line_buffer[i] != '\0' && line_buffer[i] != '\n')
+	while (line_buffer[i] && line_buffer[i] != '\n')
 		i++;
 	if (line_buffer[i] == '\n')
 		i++;
-	if (line_buffer[i] == '\0')
+	if (!line_buffer[i])
 	{
 		free(line_buffer);
 		return (NULL);
@@ -90,7 +91,6 @@ static char	*_set_line(char *line_buffer)
 static char	*extract_line(char *remainder)
 {
 	int		i;
-	int		j;
 	char	*line;
 
 	if (!remainder)
@@ -103,27 +103,9 @@ static char	*extract_line(char *remainder)
 	line = malloc(i + 1);
 	if (!line)
 		return (NULL);
-	j = 0;
-	while (j < i)
-	{
-		line[j] = remainder[j];
-		j++;
-	}
-	line[j] = '\0';
+	line[i] = '\0';
+	while (i-- > 0)
+		line[i] = remainder[i];
 	return (line);
 }
 
-// int	main(void)
-// {
-// 	int		fd;
-// 	char	*line;
-
-// 	fd = open("test.txt", O_RDONLY);
-// 	line = get_next_line(fd);
-// 	while (*line != '\n')
-// 	{
-// 		printf("%s", line);
-// 	}
-// 	close(fd);
-// 	return (0);
-// }

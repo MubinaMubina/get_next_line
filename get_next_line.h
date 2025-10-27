@@ -6,7 +6,7 @@
 /*   By: mmubina <mmubina@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/23 17:46:41 by mmubina           #+#    #+#             */
-/*   Updated: 2025/10/27 18:17:37 by mmubina          ###   ########.fr       */
+/*   Updated: 2025/10/27 20:41:15 by mmubina          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,5 +35,6 @@ ssize_t				ft_strlen(const char *s);
 char				*ft_strjoin(char *s1, char const *s2);
 char				*ft_strdup(const char *src);
 char				*get_next_line(int fd);
+char				*ft_strchr(const char *s, int c);
 
 #endif

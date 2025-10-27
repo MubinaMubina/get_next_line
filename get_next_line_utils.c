@@ -6,7 +6,7 @@
 /*   By: mmubina <mmubina@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/23 17:58:48 by mmubina           #+#    #+#             */
-/*   Updated: 2025/10/24 19:41:48 by mmubina          ###   ########.fr       */
+/*   Updated: 2025/10/27 20:41:13 by mmubina          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,8 @@ char	*ft_strdup(const char *src)
 	char	*str;
 	size_t	i;
 
+	if (!src)
+		return (NULL);
 	i = 0;
 	str = (char *)malloc(sizeof(char) * (ft_strlen(src) + 1));
 	if (str == NULL)
@@ -56,34 +58,8 @@ ssize_t	ft_strlen(const char *s)
 		return (0);
 	i = 0;
 	while (s[i])
-	{
 		i++;
-	}
 	return (i);
-}
-
-char	*ft_substr(char const *s, unsigned int start, size_t len)
-{
-	size_t	i;
-	char	*arr;
-
-	i = 0;
-	if (s == NULL)
-		return (NULL);
-	if (start >= (unsigned int)ft_strlen(s))
-		return (ft_strdup(""));
-	if ((start + len > (unsigned int)ft_strlen(s)))
-		len = ft_strlen(s) - start;
-	arr = malloc((len + 1) * sizeof(char));
-	if (!arr)
-		return (NULL);
-	while (i < len)
-	{
-		arr[i] = s[start + i];
-		i++;
-	}
-	arr[i] = '\0';
-	return (arr);
 }
 
 char	*ft_strjoin(char *s1, char const *s2)
@@ -92,24 +68,20 @@ char	*ft_strjoin(char *s1, char const *s2)
 	int		i;
 	int		j;
 
+	if (!s1)
+		return (ft_strdup(s2));
 	if (!s2)
 		return (s1);
-	if (!s1)
-	{
-		s1 = ft_strdup("");
-		if (!s1)
-			return (NULL);
-	}
-	str = malloc((ft_strlen(s1) + ft_strlen(s2) + 1) * sizeof(char));
+	str = malloc(ft_strlen(s1) + ft_strlen(s2) + 1);
 	if (!str)
 		return (free(s1), NULL);
-	i = 0;
+	i = -1;
+	while (s1[++i])
+		str[i] = s1[i];
 	j = 0;
-	while (s1[i])
-		str[j++] = s1[i++];
-	i = 0;
-	while (s2[i])
-		str[j++] = s2[i++];
-	str[j] = '\0';
-	return (free(s1), str);
+	while (s2[j])
+		str[i++] = s2[j++];
+	str[i] = '\0';
+	free(s1);
+	return (str);
 }
