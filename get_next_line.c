@@ -6,14 +6,14 @@
 /*   By: mmubina <mmubina@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/23 20:07:45 by mmubina           #+#    #+#             */
-/*   Updated: 2025/10/27 20:51:11 by mmubina          ###   ########.fr       */
+/*   Updated: 2025/10/28 22:05:33 by mmubina          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-static char	*_fill_line_buffer(int fd, char *remainder, char *buffer);
-static char	*_set_line(char *line_buffer);
+static char	*read_to_buffer(int fd, char *remainder, char *buffer);
+static char	*update_remainder(char *line_buffer);
 static char	*extract_line(char *remainder);
 
 char	*get_next_line(int fd)
@@ -27,7 +27,7 @@ char	*get_next_line(int fd)
 	buffer = malloc(BUFFER_SIZE + 1);
 	if (!buffer)
 		return (NULL);
-	remainder = _fill_line_buffer(fd, remainder, buffer);
+	remainder = read_to_buffer(fd, remainder, buffer);
 	free(buffer);
 	if (!remainder)
 		return (NULL);
@@ -38,11 +38,11 @@ char	*get_next_line(int fd)
 		remainder = NULL;
 		return (NULL);
 	}
-	remainder = _set_line(remainder);
+	remainder = update_remainder(remainder);
 	return (line);
 }
 
-static char	*_fill_line_buffer(int fd, char *rem, char *buf)
+static char	*read_to_buffer(int fd, char *rem, char *buf)
 {
 	ssize_t	bytes_read;
 
@@ -66,7 +66,7 @@ static char	*_fill_line_buffer(int fd, char *rem, char *buf)
 	return (rem);
 }
 
-static char	*_set_line(char *line_buffer)
+static char	*update_remainder(char *line_buffer)
 {
 	int		i;
 	char	*new_remainder;
@@ -108,4 +108,3 @@ static char	*extract_line(char *remainder)
 		line[i] = remainder[i];
 	return (line);
 }
-
